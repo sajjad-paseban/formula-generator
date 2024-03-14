@@ -1,0 +1,20 @@
+@import 'reset.scss';
+@import 'fonts.scss';
+@import 'materials/buttons.scss';
+
+body{
+    direction: rtl;
+}
+
+
+.swal2-title{
+    font-family: 'yekan';
+    font-size: 25px;
+}
+
+.swal2-actions{
+    direction: ltr;
+    button{
+        font-family: 'yekan';
+    }
+}
