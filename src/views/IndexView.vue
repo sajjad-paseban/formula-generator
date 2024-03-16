@@ -37,7 +37,6 @@
     import AllVariablePartial from '../partials/all-variable.partial.vue';
     import VariableDeclarationPartial from '../partials/variable-declaration.partial.vue';
     import ProcessFieldsetPartial from '../partials/process-fieldset.partial.vue';
-    import { getAll } from '../services/variables.service';
     export default defineComponent({
         name: 'IndexView',
         components: { 
@@ -85,9 +84,6 @@
                 .then(res => res.json())
                 .then(response => this.response = response)
             }
-        },
-        async mounted(){
-            const response = await getAll().then(res => res);
         }
         
     })
