@@ -6,10 +6,32 @@
         <input v-model="form.params.name" type="text">
        
         <label for="">
-            مقدار متغیر
+            نوع متغیر
         </label>
-        <input v-model="form.params.value" type="text">
-       
+        <select v-model="form.params.type">
+            <option value="0">
+                مقدار ثابت
+            </option>
+            <option value="1">
+                مقدار سیستمی
+            </option>
+        </select>
+        <div v-if="form.params.type == 0">
+            <label for="">
+                مقدار متغیر
+            </label>
+            <input v-model="form.params.value" type="text">
+        </div>
+        <div v-if="form.params.type == 1">
+            <label for="">
+                جست و جوی متغیر
+            </label>
+            <select v-model="form.params.value">
+                <option v-for="(item, index) in variables" :key="index" :value="item.detail">
+                    {{ item.name }}
+                </option>
+            </select>
+        </div>
         <button type="button" @click="confirm" class="button-8">
             ثبت
         </button>
@@ -18,6 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { getAll } from "../services/variables.service";
 import { useVariableStore } from "../stores/variable";
 
 export default defineComponent({
@@ -27,9 +50,11 @@ export default defineComponent({
             form:{
                 params:{
                     name: null,
+                    type: null,
                     value: null
                 }
             },
+            variables: null,
             variableStore: useVariableStore()
         }
     },
@@ -43,6 +68,9 @@ export default defineComponent({
             this.form.params.value = null
 
         }
+    },
+    async mounted(){
+        this.variables = (await getAll().then(res => res)).data
     }
 })
 
@@ -50,6 +78,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
     form{
+        select{
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+        }
         button{
             font-family: 'vazir';
             font-size: 9px;
