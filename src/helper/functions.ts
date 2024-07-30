@@ -132,7 +132,7 @@ function variablesFilter(variable: string){
     ];
 
     const signs = [
-        '+','-','*','/','(',')','='
+        '+','-','*','/','(',')','=','.'
     ];
     
     let flag = false;
@@ -156,11 +156,27 @@ function variablesFilter(variable: string){
     return newVariable;
 }
 
+function parametersToPhpCode(variable: any){
+    const params = JSON.parse(variable.params);
+    const body = variable.body;
+    var result = '';
+    if(params && params.length > 0){
+        params.map((item: any, index: number) => {
+            result +=  variablesFilter(item.value) + ((params.length - 1 != index) ? ',': '')
+        })
+        return (body as string).replaceAll('()', '(' + result +')')
+    }else{
+        return body;
+    }
+}
+
 export function variablesToPhpCode(variable: any){
     let code = '';
     (variable as Array<any>).map((val, index) =>{
 
-        code += '\$'+val.name+'='+ variablesFilter(val.value) +';\n'
+        let filter = (val.type == 0) ? variablesFilter(val.value) : parametersToPhpCode(val.value);
+        
+        code += '\$'+val.name+'='+ filter +';\n'
     
     })
     return code

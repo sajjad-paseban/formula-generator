@@ -27,7 +27,7 @@
                 جست و جوی متغیر
             </label>
             <select v-model="form.params.value">
-                <option v-for="(item, index) in variables" :key="index" :value="item.detail">
+                <option v-for="(item, index) in variables" :key="index" :value="item">
                     {{ item.name }}
                 </option>
             </select>
@@ -55,16 +55,17 @@ export default defineComponent({
                 }
             },
             variables: null,
-            variableStore: useVariableStore()
         }
     },
     methods: {
         confirm(){
-            this.variableStore.addVariable({
+            useVariableStore().addVariable({
                 name: this.form.params.name,
+                type: this.form.params.type,
                 value: this.form.params.value
             })
             this.form.params.name = null
+            this.form.params.type = null
             this.form.params.value = null
 
         }
